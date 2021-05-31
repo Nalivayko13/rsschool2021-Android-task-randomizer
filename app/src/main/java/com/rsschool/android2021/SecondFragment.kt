@@ -6,18 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 
 class SecondFragment : Fragment() {
 
     private var backButton: Button? = null
     private var result: TextView? = null
+    private lateinit var fragmentListner: FragmentListner
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        fragmentListner = context as FragmentListner
         return inflater.inflate(R.layout.fragment_second, container, false)
     }
 
@@ -28,17 +31,21 @@ class SecondFragment : Fragment() {
 
         val min = arguments?.getInt(MIN_VALUE_KEY) ?: 0
         val max = arguments?.getInt(MAX_VALUE_KEY) ?: 0
+        val genNumber =  generate(min, max)
 
-        result?.text = generate(min, max).toString()
+        result?.text = genNumber.toString()
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this){
+            fragmentListner.actionPerformed1(genNumber)
+        }
+
 
         backButton?.setOnClickListener {
-            // TODO: implement back
+            fragmentListner.actionPerformed1(genNumber)
         }
     }
 
     private fun generate(min: Int, max: Int): Int {
-        // TODO: generate random number
-        return 0
+        return (min..max).random()
     }
 
     companion object {
@@ -48,7 +55,9 @@ class SecondFragment : Fragment() {
             val fragment = SecondFragment()
             val args = Bundle()
 
-            // TODO: implement adding arguments
+            args.putInt(MIN_VALUE_KEY,min)
+            args.putInt(MAX_VALUE_KEY,max)
+            fragment.arguments = args
 
             return fragment
         }

@@ -20,12 +20,16 @@ public class MainActivity extends AppCompatActivity implements FragmentListner {
         final Fragment firstFragment = FirstFragment.newInstance(previousNumber);
         final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.container, firstFragment);
+
+        transaction.commit();
     }
 
     private void openSecondFragment(int min, int max) {
         final Fragment secondFragment = SecondFragment.newInstance(min,max);
         final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.container, secondFragment);
+
+        transaction.commit();
     }
     @Override
     public void actionPerformed2(int min, int max) {
@@ -37,4 +41,3 @@ public class MainActivity extends AppCompatActivity implements FragmentListner {
     }
 
 }
-
